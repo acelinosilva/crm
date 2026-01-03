@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import {
     ArrowUpRight, ArrowDownRight, Users, Briefcase,
     DollarSign, Activity, TrendingUp, TrendingDown,
-    MessageSquare, CheckCircle
+    MessageSquare, CheckCircle, Target
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import {
@@ -30,7 +30,7 @@ const StatCard = ({ title, value, change, isPositive, icon: Icon, delay, loading
             )}
         </div>
         <h3 className="text-muted-foreground text-sm font-medium">{title}</h3>
-        <div className="text-2xl font-bold mt-1 text-white">
+        <div className="text-2xl font-bold mt-1 text-foreground">
             {loading ? <div className="h-8 w-24 bg-secondary animate-pulse rounded" /> : value}
         </div>
     </motion.div>
@@ -100,11 +100,22 @@ const Dashboard = () => {
         <div className="space-y-8 pb-12">
             <div className="flex justify-between items-end">
                 <div>
-                    <h2 className="text-3xl font-bold tracking-tight text-white">Dashboard</h2>
+                    <h2 className="text-3xl font-bold tracking-tight text-foreground">Dashboard</h2>
                     <p className="text-muted-foreground mt-1">Sua agência num relance.</p>
                 </div>
-                <div className="flex gap-4">
-                    {/* Quick Actions can go here */}
+                <div className="flex items-center gap-4 bg-card/40 border border-border/50 px-4 py-2 rounded-2xl backdrop-blur-md">
+                    <div className="flex flex-col items-end">
+                        <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Meta Mensal</span>
+                        <span className="text-sm font-bold text-foreground">R$ {stats.revenue.toLocaleString('pt-BR')} / R$ 50.000</span>
+                    </div>
+                    <div className="w-24 h-2 bg-secondary/50 rounded-full overflow-hidden">
+                        <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${Math.min((stats.revenue / 50000) * 100, 100)}%` }}
+                            className="h-full bg-primary"
+                        />
+                    </div>
+                    <Target className="w-5 h-5 text-primary" />
                 </div>
             </div>
 
@@ -119,11 +130,14 @@ const Dashboard = () => {
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="lg:col-span-2 p-8 rounded-3xl bg-card/40 border border-border/50 backdrop-blur-md"
+                    className="lg:col-span-2 p-8 rounded-3xl bg-card/40 border border-border/50 backdrop-blur-md relative overflow-hidden group"
                 >
-                    <div className="flex justify-between items-start mb-8">
+                    <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <Activity className="w-32 h-32 text-primary" />
+                    </div>
+                    <div className="flex justify-between items-start mb-8 relative z-10">
                         <div>
-                            <h3 className="text-xl font-bold text-white">Performance de Vendas</h3>
+                            <h3 className="text-xl font-bold text-foreground">Performance de Vendas</h3>
                             <p className="text-sm text-muted-foreground">Crescimento de faturamento semestral</p>
                         </div>
                         <div className="p-2 bg-primary/10 rounded-lg text-primary">
@@ -131,7 +145,7 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-                    <div className="h-[300px] w-full">
+                    <div className="h-[300px] w-full relative z-10">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={chartData}>
                                 <defs>
@@ -144,8 +158,8 @@ const Dashboard = () => {
                                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} dy={10} />
                                 <YAxis hide />
                                 <Tooltip
-                                    contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '12px' }}
-                                    itemStyle={{ color: '#fff' }}
+                                    contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '12px' }}
+                                    itemStyle={{ color: 'hsl(var(--foreground))' }}
                                 />
                                 <Area
                                     type="monotone"
@@ -165,7 +179,7 @@ const Dashboard = () => {
                     animate={{ opacity: 1, x: 0 }}
                     className="p-8 rounded-3xl bg-card/40 border border-border/50 backdrop-blur-md flex flex-col"
                 >
-                    <h3 className="text-xl font-bold mb-6 text-white">Feed de Atividade</h3>
+                    <h3 className="text-xl font-bold mb-6 text-foreground">Feed de Atividade</h3>
                     <div className="flex-1 space-y-6">
                         {recentActivities.map((item, i) => (
                             <div key={i} className="flex gap-4 items-start relative pb-6 last:pb-0">
@@ -177,7 +191,7 @@ const Dashboard = () => {
                                     {item.type === 'project' ? <CheckCircle className="w-3.5 h-3.5" /> : <MessageSquare className="w-3.5 h-3.5" />}
                                 </div>
                                 <div>
-                                    <p className="text-sm font-medium text-white">
+                                    <p className="text-sm font-medium text-foreground">
                                         {item.type === 'project' ? 'Projeto Iniciado' : 'Novo Lead Recebido'}
                                     </p>
                                     <p className="text-xs text-muted-foreground mt-0.5">{item.name}</p>
@@ -188,7 +202,7 @@ const Dashboard = () => {
                             </div>
                         ))}
                     </div>
-                    <button className="w-full mt-6 py-3 rounded-2xl bg-secondary/50 text-xs font-bold uppercase tracking-widest hover:bg-secondary transition-all text-muted-foreground hover:text-white">
+                    <button className="w-full mt-6 py-3 rounded-2xl bg-secondary/50 text-xs font-bold uppercase tracking-widest hover:bg-secondary transition-all text-muted-foreground hover:text-foreground">
                         Relatório Completo
                     </button>
                 </motion.div>

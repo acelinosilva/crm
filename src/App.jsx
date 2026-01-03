@@ -4,6 +4,7 @@ import { supabase } from './lib/supabase';
 import Layout from './layouts/Layout';
 import Dashboard from './pages/Dashboard';
 import Clients from './pages/Clients';
+import ClientDetails from './pages/ClientDetails';
 import Projects from './pages/Projects';
 import Financial from './pages/Financial';
 import Leads from './pages/Leads';
@@ -45,6 +46,7 @@ const App = () => {
           <Route index element={<Dashboard />} />
           <Route path="leads" element={<Leads />} />
           <Route path="clients" element={<Clients />} />
+          <Route path="clients/:id" element={<ClientDetails />} />
           <Route path="projects" element={<Projects />} />
           <Route path="financial" element={<Financial />} />
           <Route path="*" element={<Navigate to="/" replace />} />

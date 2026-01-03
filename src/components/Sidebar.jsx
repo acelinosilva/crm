@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
+import ThemeToggle from './ThemeToggle';
 
 const Sidebar = () => {
     const links = [
@@ -63,7 +64,8 @@ const Sidebar = () => {
                 ))}
             </nav>
 
-            <div className="p-4 border-t border-border/50">
+            <div className="p-4 border-t border-border/50 space-y-2">
+                <ThemeToggle />
                 <button
                     onClick={handleLogout}
                     className="flex items-center gap-3 w-full px-4 py-3 text-muted-foreground hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
