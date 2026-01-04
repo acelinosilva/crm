@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import Layout from './layouts/Layout';
 import Dashboard from './pages/Dashboard';
@@ -38,7 +38,7 @@ const App = () => {
   }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/login" element={!session ? <Login /> : <Navigate to="/" replace />} />
 
@@ -52,7 +52,7 @@ const App = () => {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
